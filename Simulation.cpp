@@ -1,6 +1,7 @@
 #include "Simulation.hpp"
 #include <iostream>
 
+// Method to run the simulation until completion
 void Simulation::run()
 {
     for(; i < duration; i += step)
@@ -18,6 +19,7 @@ void Simulation::run()
     std::cout << "The simulation has finished!!!" << std::endl;
 }
 
+// Method to run the simulation step by step
 void Simulation::runStepByStep()
 {
     for(; i < duration; i += step)
@@ -38,6 +40,7 @@ void Simulation::runStepByStep()
     std::cout << "The simulation has finished!!!" << std::endl;
 }
 
+// Method to run one step of the simulation
 void Simulation::runOneStep()
 {
     for(Vehicle* v : vehicles)
@@ -55,6 +58,7 @@ void Simulation::runOneStep()
         v->tick(step);
 }
 
+// Method to print the current state of a vehicle
 void Simulation::printState(Vehicle* v)
 {
     for(NodeLocation* loc : graph->getLocations())
@@ -93,6 +97,7 @@ void Simulation::printState(Vehicle* v)
     }
 }
 
+// Method to get the duration of the path between two nodes
 int Simulation::getDurration(Node* from, Node* to)
 {
     return graph->getDurration(from, to);

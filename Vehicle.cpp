@@ -1,6 +1,7 @@
 #include "Vehicle.hpp"
 #include <iostream>
 
+// Method that simulates one step of vehicle movement
 void Vehicle::tick(int step)
 {
     if(current->getId() == goal->getId())

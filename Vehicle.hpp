@@ -2,6 +2,7 @@
 
 #include "Graph.hpp"
 
+// Class for vehicles in the simulation
 class Vehicle
 {
 public:

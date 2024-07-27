@@ -5,6 +5,7 @@
 #include <set>
 #include <list>
 
+// Base class for all types of nodes in the graph
 class Node
 {
 public:
@@ -17,6 +18,7 @@ private:
     int id;
 };
 
+// Class for location nodes (cities, parking, etc.)
 class NodeLocation : public Node
 {
 public:
@@ -27,6 +29,7 @@ private:
     std::string name;
 };
 
+// Class for path nodes (road segments)
 class NodePath : public Node
 {
 public:
@@ -47,6 +50,7 @@ private:
     Node* outNode;
 };
 
+// Class for intersection nodes
 class NodeIntersection : public Node
 {
 public:
@@ -61,6 +65,7 @@ private:
     std::set<NodePath*> paths;
 };
 
+// Class for the graph representing the traffic network
 class Graph
 {
 public:

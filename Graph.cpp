@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 
+// Calculates the shortest path between two location nodes
 int Graph::calculateLocation(NodeLocation* from, NodeLocation* to,
     std::set<Node*> visited, Node** next)
 {
@@ -31,6 +32,7 @@ int Graph::calculateLocation(NodeLocation* from, NodeLocation* to,
     return minLength;
 }
 
+// Calculates the shortest path through a path node
 int Graph::calculatePath(NodePath* from, NodeLocation* to,
     std::set<Node *> visited, Node** next)
 {
@@ -76,6 +78,7 @@ int Graph::calculatePath(NodePath* from, NodeLocation* to,
     return minLength;
 }
 
+// Calculates the shortest path through an intersection
 int Graph::calculateIntersection(NodePath* from, NodeIntersection* intersection, NodeLocation* to,
     std::set<Node *> visited, Node** next)
 {
@@ -103,6 +106,7 @@ int Graph::calculateIntersection(NodePath* from, NodeIntersection* intersection,
     return minLength;
 }
 
+// Finds the best next node on the path
 Node* Graph::bestNextNode(Node* from, Node* to)
 {
     Node* next = to;
@@ -131,6 +135,7 @@ Node* Graph::bestNextNode(Node* from, Node* to)
     return next;
 }
 
+// Gets the duration of the path between two nodes
 int Graph::getDurration(Node *from, Node *to)
 {
     Node* next = to;
@@ -160,6 +165,7 @@ int Graph::getDurration(Node *from, Node *to)
     return length;
 }
 
+// Serialize the graph to a file
 void Graph::serialize(std::ofstream& out)
 {
     out << locations.size() << "\n";
@@ -180,6 +186,7 @@ void Graph::serialize(std::ofstream& out)
     }
 }
 
+// Deserialize the graph from a file
 Graph Graph::deserialize(std::ifstream &in)
 {
     Graph graph;

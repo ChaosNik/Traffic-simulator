@@ -3,6 +3,7 @@
 #include "Graph.hpp"
 #include "Vehicle.hpp"
 
+// Class for traffic simulation
 class Simulation
 {
 public:
