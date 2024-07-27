@@ -81,6 +81,7 @@ public:
     bool isPath(Node* x) {return paths.count((NodePath*)x);}
     bool isIntersection(Node* x) {return intersections.count((NodeIntersection*)x);}
     void serialize(std::ofstream& out);
+    Graph deserialize(std::ifstream& in);
 
 private:
     std::set<NodeLocation*> locations;

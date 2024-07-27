@@ -3,7 +3,7 @@
 
 int main()
 {
-    // Everything will be on stack so we don't have to implicitly delete it
+    // Everything will be on stack so it dones't have to implicitly deleted
     
     // Generating map graph
     Graph map;
@@ -94,6 +94,13 @@ int main()
     Vehicle v5(5, &map, &A, &D, 3);
     Vehicle v6(6, &map, &D, &A, 3);
 
+    // Closest path from A to B
+    std::set<Node *> visited;
+    Node* next = &A;
+    map.calculateLocation(&A, &B, visited, &next);
+    std::cout << "Next node in closest path from A to B is the node with ID: " << next->getId()
+        << std::endl << std::endl;
+
     // Adding vehicles to the simulation
     sim.addVehicle(&v1);
     sim.addVehicle(&v2);
@@ -106,6 +113,7 @@ int main()
     // sim.run();
     sim.runStepByStep();
 
+    // Serialization
     std::ofstream out("test.txt", std::ofstream::out);
     map.serialize(out);
     out.close();

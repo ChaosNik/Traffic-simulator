@@ -4,51 +4,52 @@
 void Simulation::run()
 {
     for(; i < duration; i += step)
+    {
+        std::cout << "Time: " << i << std::endl << std::endl;
         runOneStep();
+        bool finished = true;
+        for(Vehicle* v : vehicles)
+            if(v->getGoal()->getId() != v->getCurrent()->getId())
+                finished = false;
+        if(finished)
+            i = duration;
+    }
+
+    std::cout << "The simulation has finished!!!" << std::endl;
 }
 
 void Simulation::runStepByStep()
 {
     for(; i < duration; i += step)
     {
+        std::cout << "Time: " << i << std::endl << std::endl;
         runOneStep();
-
+        bool finished = true;
+        for(Vehicle* v : vehicles)
+            if(v->getGoal()->getId() != v->getCurrent()->getId())
+                finished = false;
+        if(finished)
+            i = duration;
+        
         std::string line;
         std::getline(std::cin, line);
     }
+
+    std::cout << "The simulation has finished!!!" << std::endl;
 }
 
 void Simulation::runOneStep()
 {
-    for(NodeLocation* loc : graph->getLocations())
+    for(Vehicle* v : vehicles)
     {
-        std::cout << loc->getName() << ": ";
-        for(Vehicle* v : vehicles)
-            if(v->getCurrent()->getId() == loc->getId())
-                std::cout << v->getId();
-        std::cout << std::endl;
-    }
-    for(NodePath* path : graph->getPaths())
-    {
-        std::cout << path->getId() << ": ";
-        for(Vehicle* v : vehicles)
-            if(v->getCurrent()->getId() == path->getId())
-                std::cout << v->getId();
-        std::cout << std::endl;
+        if(v->getCurrent()->getId() == v->getGoal()->getId())
+            std::cout << "Vehicle " << v->getId() << " has finished and is in it's goal "
+                << v->getGoal()->getId() << std::endl;
+        else
+            std::cout << "Vehicle " << v->getId() << " whose goal is " << v->getGoal()->getId()
+                << " is in " << v->getCurrent()->getId() << std::endl;
     }
     std::cout << std::endl;
-    for(NodeIntersection* inter : graph->getIntersections())
-    {
-        std::cout << inter->getId() << ":" << std::endl;
-        for(NodePath* path : inter->getPaths())
-        {
-            std::cout << "\t" << path->getId() << ": ";
-            for(Vehicle* v : vehicles)
-                if(v->getCurrent()->getId() == path->getId())
-                    std::cout << v->getId();
-            std::cout << std::endl;
-        }
-    }
 
     for(Vehicle* v : vehicles)
         v->tick(step);
