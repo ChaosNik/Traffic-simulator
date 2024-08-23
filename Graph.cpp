@@ -174,12 +174,12 @@ void Graph::serialize(std::ofstream& out)
     
     out << paths.size() << "\n";
     for (auto& path : paths)
-        out << path->getId() << "\n" << path->getLength() << "\n" << path->getMaxSpeed() << "\n"
+        out << path->getId() << "\n" << path->getSlowdownFactorValue() << "\n" << path->getLength() << "\n" << path->getMaxSpeed() << "\n"
             << path->getCapacity() << "\n" << path->getInNode()->getId() << "\n" << path->getOutNode()->getId() << "\n";
 
     out << intersections.size() << "\n";
     for (auto& intersection : intersections) {
-        out << intersection->getId() << "\n" << intersection->getMaxSpeed() << "\n";
+        out << intersection->getId() << intersection->getSlowdownFactorValue() << "\n" << "\n" << intersection->getMaxSpeed() << "\n";
         out << intersection->getPaths().size() << "\n";
         for (auto& path : intersection->getPaths())
             out << path->getId() << "\n";
@@ -214,7 +214,8 @@ Graph Graph::deserialize(std::ifstream &in)
     std::getline(in, line); // consume newline
     for (size_t i = 0; i < size; ++i) {
         int id, length, maxSpeed, maxCapacity, inNodeId, outNodeId;
-        in >> id >> length >> maxSpeed >> maxCapacity >> inNodeId >> outNodeId;
+        float slowdownFactor;
+        in >> id >> slowdownFactor >> length >> maxSpeed >> maxCapacity >> inNodeId >> outNodeId;
         in.ignore(); // Ignore the newline after the last integer
 
         Node* inNode = nullptr;
@@ -225,7 +226,7 @@ Graph Graph::deserialize(std::ifstream &in)
         }
 
         if (inNode && outNode) {
-            NodePath* path = new NodePath(id, length, maxSpeed, maxCapacity, inNode, outNode);
+            NodePath* path = new NodePath(id, slowdownFactor, length, maxSpeed, maxCapacity, inNode, outNode);
             graph.paths.insert(path);
             nodes.insert(path);
         }
@@ -236,10 +237,11 @@ Graph Graph::deserialize(std::ifstream &in)
     std::getline(in, line); // consume newline
     for (size_t i = 0; i < size; ++i) {
         int id, maxCapacity, pathCount, pathId;
-        in >> id >> maxCapacity >> pathCount;
+        float slowdownFactor;
+        in >> id >> slowdownFactor >> maxCapacity >> pathCount;
         in.ignore(); // Ignore the newline after the last integer
 
-        auto* intersection = new NodeIntersection(id, maxCapacity);
+        auto* intersection = new NodeIntersection(id, slowdownFactor, maxCapacity);
         for (int j = 0; j < pathCount; ++j) {
             in >> pathId;
             in.ignore(); // Ignore the newline after the integer
@@ -254,4 +256,13 @@ Graph Graph::deserialize(std::ifstream &in)
     }
 
     return graph;
+}
+
+int Node::getSlowdownFactor(int numberOfVehiclesInNode)
+{
+    if(getCapacity() > 0 && getCapacity() < 10000 )
+    {
+        return slowdownFactor * numberOfVehiclesInNode / getCapacity();
+    }
+    return slowdownFactor;
 }

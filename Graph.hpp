@@ -9,13 +9,17 @@
 class Node
 {
 public:
-    Node(int id): id(id) {}
-    virtual int getId() {return id;}
+    Node(int id, float slowdownFactor = 1): id(id), slowdownFactor(slowdownFactor) {}
+    virtual int getId(){return id;}
     virtual int getLength() {return 0;}
     virtual int getMaxSpeed() {return 10000;}
+    int getCapacity() {return 10000;}
+    int getSlowdownFactor(int numberOfVehiclesInNode);
+    float getSlowdownFactorValue() {return slowdownFactor;}
 
 private:
     int id;
+    float slowdownFactor;
 };
 
 // Class for location nodes (cities, parking, etc.)
@@ -33,8 +37,8 @@ private:
 class NodePath : public Node
 {
 public:
-    NodePath(int id, int length, int maxSpeed, int maxCapacity, Node* inNode, Node* outNode):
-        Node(id), length(length), maxSpeed(maxSpeed), maxCapacity(maxCapacity),
+    NodePath(int id, float slowdownFactor, int length, int maxSpeed, int maxCapacity, Node* inNode, Node* outNode):
+        Node(id, slowdownFactor), length(length), maxSpeed(maxSpeed), maxCapacity(maxCapacity),
         inNode(inNode), outNode(outNode) {}
     int getLength() {return length;}
     int getMaxSpeed() {return maxSpeed;}
@@ -54,9 +58,9 @@ private:
 class NodeIntersection : public Node
 {
 public:
-    NodeIntersection(int id, int maxCapacity,
+    NodeIntersection(int id, float slowdownFactor, int maxCapacity,
         std::set<NodePath*> paths = {}):
-        Node(id), paths(paths), maxCapacity(maxCapacity) {}
+        Node(id, slowdownFactor), paths(paths), maxCapacity(maxCapacity) {}
     std::set<NodePath*> getPaths() {return paths;}
     void addNodePath(NodePath* path) {paths.insert(path);}
 
@@ -69,7 +73,7 @@ private:
 class Graph
 {
 public:
-    Graph() {}
+    Graph(bool calculateBestByTime = false) {}
     std::set<NodeLocation*> getLocations() {return locations;}
     std::set<NodePath*> getPaths() {return paths;}
     std::set<NodeIntersection*> getIntersections() {return intersections;}
@@ -92,4 +96,5 @@ private:
     std::set<NodeLocation*> locations;
     std::set<NodePath*> paths;
     std::set<NodeIntersection*> intersections;
+    bool calculateBestByTime;
 };

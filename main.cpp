@@ -3,7 +3,7 @@
 
 int main()
 {
-    // Everything will be on stack so it dones't have to implicitly deleted
+    // Everything will be on stack so it doesn't have to implicitly deleted
     
     // Generating map graph
     Graph map;
@@ -21,23 +21,23 @@ int main()
     map.addLocation(&D);
 
     // Creating intersection
-    NodeIntersection X(5, 3);
-    NodeIntersection Y(6, 3);
+    NodeIntersection X(5, 1, 3);
+    NodeIntersection Y(6, 1, 3);
 
     // Adding intersections to the graph
     map.addIntersection(&X);
     map.addIntersection(&Y);
 
     // Creating paths
-    NodePath AX(15, 100, 3, 5, &A, &X);
-    NodePath XA(51, 100, 3, 5, &X, &A);
-    NodePath XB(52, 100, 3, 5, &X, &B);
-    NodePath BY(26, 100, 3, 5, &B, &Y);
-    NodePath CX(35, 100, 3, 5, &C, &X);
-    NodePath XC(53, 100, 3, 5, &X, &C);
-    NodePath XD(54, 100, 3, 5, &X, &B);
-    NodePath DY(46, 100, 3, 5, &B, &Y);
-    NodePath YX(65, 100, 3, 5, &X, &B);
+    NodePath AX(15, 2, 100, 3, 5, &A, &X);
+    NodePath XA(51, 1, 100, 3, 5, &X, &A);
+    NodePath XB(52, 1, 100, 3, 5, &X, &B);
+    NodePath BY(26, 1, 100, 3, 5, &B, &Y);
+    NodePath CX(35, 1, 100, 3, 5, &C, &X);
+    NodePath XC(53, 1, 100, 3, 5, &X, &C);
+    NodePath XD(54, 1, 100, 3, 5, &X, &B);
+    NodePath DY(46, 1, 100, 3, 5, &B, &Y);
+    NodePath YX(65, 1, 100, 3, 5, &X, &B);
 
 
     // Adding paths to the graph
@@ -52,20 +52,20 @@ int main()
     map.addPath(&YX);
 
     // Creating paths in intersections
-    NodePath AXD(154, 100, 3, 5, &AX, &XD);
-    NodePath AXB(152, 100, 3, 5, &AX, &XB);
-    NodePath AXC(153, 100, 3, 5, &AX, &XC);
-    NodePath CXA(351, 100, 3, 5, &CX, &XA);
-    NodePath CXB(352, 100, 3, 5, &CX, &XB);
-    NodePath CXC(353, 100, 3, 5, &CX, &XC);
-    NodePath CXD(354, 100, 3, 5, &CX, &XD);
-    NodePath YXA(651, 100, 3, 5, &YX, &XA);
-    NodePath YXB(652, 100, 3, 5, &YX, &XB);
-    NodePath YXC(653, 100, 3, 5, &YX, &XC);
-    NodePath YXD(654, 100, 3, 5, &YX, &XD);
+    NodePath AXD(154, 1, 100, 3, 5, &AX, &XD);
+    NodePath AXB(152, 1, 100, 3, 5, &AX, &XB);
+    NodePath AXC(153, 1, 100, 3, 5, &AX, &XC);
+    NodePath CXA(351, 1, 100, 3, 5, &CX, &XA);
+    NodePath CXB(352, 1, 100, 3, 5, &CX, &XB);
+    NodePath CXC(353, 1, 100, 3, 5, &CX, &XC);
+    NodePath CXD(354, 1, 100, 3, 5, &CX, &XD);
+    NodePath YXA(651, 1, 100, 3, 5, &YX, &XA);
+    NodePath YXB(652, 1, 100, 3, 5, &YX, &XB);
+    NodePath YXC(653, 1, 100, 3, 5, &YX, &XC);
+    NodePath YXD(654, 1, 100, 3, 5, &YX, &XD);
 
-    NodePath DYX(465, 100, 3, 5, &DY, &YX);
-    NodePath BYX(265, 100, 3, 5, &BY, &YX);
+    NodePath DYX(465, 1, 100, 3, 5, &DY, &YX);
+    NodePath BYX(265, 1, 100, 3, 5, &BY, &YX);
 
     // Adding paths to intersections
     X.addNodePath(&AXD);

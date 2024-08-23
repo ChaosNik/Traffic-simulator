@@ -11,10 +11,10 @@ public:
         preferredSpeed(preferredSpeed), coveredPath(0) {}
     int getId() {return id;}
     int getPrefferedSpeed() {return preferredSpeed;}
-    int getTimeAtCurrent() {return preferredSpeed;}
+    // int getTimeAtCurrent() {return preferredSpeed;}
     Node* getCurrent() {return current;}
     Node* getGoal() {return goal;}
-    void tick(int step);
+    void tick(int step, std::list<Vehicle*> vehicles);
 
 private:
     int id;

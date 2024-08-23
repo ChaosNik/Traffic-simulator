@@ -55,7 +55,7 @@ void Simulation::runOneStep()
     std::cout << std::endl;
 
     for(Vehicle* v : vehicles)
-        v->tick(step);
+        v->tick(step, vehicles);
 }
 
 // Method to print the current state of a vehicle
