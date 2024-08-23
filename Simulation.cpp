@@ -15,7 +15,7 @@ void Simulation::run()
         if(finished)
             i = duration;
     }
-
+    runOneStep();
     std::cout << "The simulation has finished!!!" << std::endl;
 }
 
@@ -36,6 +36,7 @@ void Simulation::runStepByStep()
         std::string line;
         std::getline(std::cin, line);
     }
+    runOneStep();
 
     std::cout << "The simulation has finished!!!" << std::endl;
 }

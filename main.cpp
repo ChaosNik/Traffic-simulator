@@ -29,15 +29,15 @@ int main()
     map.addIntersection(&Y);
 
     // Creating paths
-    NodePath AX(15, 2, 100, 3, 5, &A, &X);
+    NodePath AX(15, 1, 100, 3, 3, &A, &X);
     NodePath XA(51, 1, 100, 3, 5, &X, &A);
-    NodePath XB(52, 1, 100, 3, 5, &X, &B);
+    NodePath XB(52, 2, 100, 3, 5, &X, &B);
     NodePath BY(26, 1, 100, 3, 5, &B, &Y);
     NodePath CX(35, 1, 100, 3, 5, &C, &X);
     NodePath XC(53, 1, 100, 3, 5, &X, &C);
     NodePath XD(54, 1, 100, 3, 5, &X, &B);
     NodePath DY(46, 1, 100, 3, 5, &B, &Y);
-    NodePath YX(65, 1, 100, 3, 5, &X, &B);
+    NodePath YX(65, 0.5, 100, 3, 5, &X, &B);
 
 
     // Adding paths to the graph
@@ -88,6 +88,13 @@ int main()
 
     // Creating vehicles
     Vehicle v1(1, &map, &A, &B, 3);
+    Vehicle v1a(11, &map, &A, &B, 3);
+    Vehicle v1b(12, &map, &A, &B, 3);
+    Vehicle v1c(13, &map, &A, &B, 3);
+    Vehicle v1d(14, &map, &A, &B, 3);
+    Vehicle v1e(15, &map, &A, &B, 3);
+    Vehicle v1f(16, &map, &A, &B, 3);
+    Vehicle v1g(17, &map, &A, &B, 3);
     Vehicle v2(2, &map, &B, &D, 3);
     Vehicle v3(3, &map, &C, &C, 3);
     Vehicle v4(4, &map, &C, &D, 3);
@@ -103,6 +110,13 @@ int main()
 
     // Adding vehicles to the simulation
     sim.addVehicle(&v1);
+    sim.addVehicle(&v1a);
+    sim.addVehicle(&v1b);
+    sim.addVehicle(&v1c);
+    sim.addVehicle(&v1d);
+    sim.addVehicle(&v1e);
+    sim.addVehicle(&v1f);
+    sim.addVehicle(&v1g);
     sim.addVehicle(&v2);
     sim.addVehicle(&v3);
     sim.addVehicle(&v4);

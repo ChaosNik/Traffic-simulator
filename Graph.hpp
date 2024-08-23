@@ -9,17 +9,18 @@
 class Node
 {
 public:
-    Node(int id, float slowdownFactor = 1): id(id), slowdownFactor(slowdownFactor) {}
+    Node(int id, int maxCapacity = 10000, float slowdownFactor = 1): id(id), maxCapacity(maxCapacity), slowdownFactor(slowdownFactor) {}
     virtual int getId(){return id;}
     virtual int getLength() {return 0;}
     virtual int getMaxSpeed() {return 10000;}
-    int getCapacity() {return 10000;}
+    int getCapacity() {return maxCapacity;}
     int getSlowdownFactor(int numberOfVehiclesInNode);
     float getSlowdownFactorValue() {return slowdownFactor;}
 
 private:
     int id;
     float slowdownFactor;
+    int maxCapacity;
 };
 
 // Class for location nodes (cities, parking, etc.)
@@ -38,18 +39,16 @@ class NodePath : public Node
 {
 public:
     NodePath(int id, float slowdownFactor, int length, int maxSpeed, int maxCapacity, Node* inNode, Node* outNode):
-        Node(id, slowdownFactor), length(length), maxSpeed(maxSpeed), maxCapacity(maxCapacity),
+        Node(id, maxCapacity, slowdownFactor), length(length), maxSpeed(maxSpeed),
         inNode(inNode), outNode(outNode) {}
     int getLength() {return length;}
     int getMaxSpeed() {return maxSpeed;}
-    int getCapacity() {return maxCapacity;}
     Node* getInNode() {return inNode;}
     Node* getOutNode() {return outNode;}
 
 private:
     int length;
     int maxSpeed;
-    int maxCapacity;
     Node* inNode;
     Node* outNode;
 };
@@ -60,12 +59,11 @@ class NodeIntersection : public Node
 public:
     NodeIntersection(int id, float slowdownFactor, int maxCapacity,
         std::set<NodePath*> paths = {}):
-        Node(id, slowdownFactor), paths(paths), maxCapacity(maxCapacity) {}
+        Node(id, maxCapacity, slowdownFactor), paths(paths) {}
     std::set<NodePath*> getPaths() {return paths;}
     void addNodePath(NodePath* path) {paths.insert(path);}
 
 private:
-    int maxCapacity;
     std::set<NodePath*> paths;
 };
 

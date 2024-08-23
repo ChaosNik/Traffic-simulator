@@ -8,24 +8,22 @@ void Vehicle::tick(int step, std::list<Vehicle*> vehicles)
         return;
 
     Node* nextNode = map->bestNextNode(current, goal);
-    int numberOfVehiclesInNode = 0;
+    int numberOfVehiclesInCurrentNode = 0;
+    int numberOfVehiclesInNextNode = 0;
     for(Vehicle* x : vehicles)
+    {
+        if(current->getId() == x->current->getId())
+            numberOfVehiclesInCurrentNode++;
         if(nextNode->getId() == x->current->getId())
-            numberOfVehiclesInNode++;
+            numberOfVehiclesInNextNode++;
+    }
 
     int currentSpeed = current->getMaxSpeed() < preferredSpeed ? current->getMaxSpeed() : preferredSpeed;
-    coveredPath += currentSpeed * step * current->getSlowdownFactor(numberOfVehiclesInNode);
-    if(coveredPath > current->getLength())
+    coveredPath += currentSpeed * step * current->getSlowdownFactor(numberOfVehiclesInCurrentNode);
+    if(coveredPath > current->getLength() && numberOfVehiclesInNextNode < nextNode->getCapacity())
     { 
-        if(numberOfVehiclesInNode < nextNode->getCapacity())
-        {
-            current = map->bestNextNode(current, goal);
-            coveredPath = 0;
-        }
+        current = nextNode;
+        coveredPath = 0;
     }
 }
 
-//// popunjen kapacitet puteva i raskrsnica
-// proracun najboljeg puta u zavisnosti od vremena ili udaljenosti
-//// faktor usporenja, lambda funkcija za svaki put
-// nastimati da vozilo promijeni putanju

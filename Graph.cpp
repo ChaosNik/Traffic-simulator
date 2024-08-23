@@ -14,22 +14,22 @@ int Graph::calculateLocation(NodeLocation* from, NodeLocation* to,
 
     visited.insert(from);
 
-    int minLength = 10000;
+    int minMeasure = 10000;
     for(NodePath* x : paths)
     {
         if(!visited.count(x) && // If not already visited
             x->getInNode()->getId() == from->getId()) // If path connects to location
         {
             Node* tempNext;
-            int length = calculatePath(x, to, visited, &tempNext);
-            if(length < minLength)
+            int measure = calculatePath(x, to, visited, &tempNext);
+            if(measure < minMeasure)
             {
-                minLength = length;
+                minMeasure = measure;
                 *next = x;
             }
         }
     }
-    return minLength;
+    return minMeasure;
 }
 
 // Calculates the shortest path through a path node
@@ -41,17 +41,29 @@ int Graph::calculatePath(NodePath* from, NodeLocation* to,
 
     visited.insert(from);
 
-    int minLength = 10000;
+    int minMeasure = 10000;
     for(NodeLocation* x : locations)
     {
         if(from->getOutNode()->getId() == x->getId()) // If path connects to location
         {
             Node* tempNext;
-            int length = from->getLength() + calculateLocation(x, to, visited, &tempNext);
-            if(length < minLength)
+            if(calculateBestByTime)
             {
-                minLength = length;
-                *next = x;
+                int time = (from->getLength() / from->getMaxSpeed()) + calculateLocation(x, to, visited, &tempNext);
+                if(time < minMeasure)
+                {
+                    minMeasure = time;
+                    *next = x;
+                }
+            }
+            else
+            {
+                int length = from->getLength() + calculateLocation(x, to, visited, &tempNext);
+                if(length < minMeasure)
+                {
+                    minMeasure = length;
+                    *next = x;
+                }
             }
         }
     }
@@ -64,18 +76,31 @@ int Graph::calculatePath(NodePath* from, NodeLocation* to,
                 if(x->getInNode()->getId() == from->getId()) // If path connects to path
                 {
                     Node* tempNext;
-                    int length = from->getLength() +
-                        calculateIntersection((NodePath*)x, intersection, to, visited, &tempNext);
-                    if(length < minLength)
+                    if(calculateBestByTime)
                     {
-                        minLength = length;
-                        *next = x;
+                        int time = from->getLength() / from->getMaxSpeed() + 
+                            calculateIntersection((NodePath*)x, intersection, to, visited, &tempNext);
+                            if(time < minMeasure)
+                            {
+                                minMeasure = time;
+                                *next = x;
+                            }
+                    }
+                    else
+                    {
+                        int length = from->getLength() +
+                            calculateIntersection((NodePath*)x, intersection, to, visited, &tempNext);
+                        if(length < minMeasure)
+                        {
+                            minMeasure = length;
+                            *next = x;
+                        }
                     }
                 }
             }
         }
     }
-    return minLength;
+    return minMeasure;
 }
 
 // Calculates the shortest path through an intersection
@@ -87,7 +112,7 @@ int Graph::calculateIntersection(NodePath* from, NodeIntersection* intersection,
 
     visited.insert(from);
 
-    int minLength = 10000;
+    int minMeasure = 10000;
     for(NodePath* x : paths)
     {
         if(!visited.count(x) && // If not already visited
@@ -95,15 +120,27 @@ int Graph::calculateIntersection(NodePath* from, NodeIntersection* intersection,
             x->getInNode()->getId() == intersection->getId()) // If path connects to intersection
         {
             Node* tempNext;
-            int length = from->getLength() + calculatePath(x, to, visited, &tempNext);
-            if(length < minLength)
+            if(calculateBestByTime)
             {
-                minLength = length;
-                *next = x;
+                int time = from->getLength() / from->getMaxSpeed() + calculatePath(x, to, visited, &tempNext);
+                if(time < minMeasure)
+                {
+                    minMeasure = time;
+                    *next = x;
+                }
             }
+            else
+            {
+                int length = from->getLength() + calculatePath(x, to, visited, &tempNext);
+                if(length < minMeasure)
+                {
+                    minMeasure = length;
+                    *next = x;
+                }  
+            } 
         }
     }
-    return minLength;
+    return minMeasure;
 }
 
 // Finds the best next node on the path
@@ -262,7 +299,7 @@ int Node::getSlowdownFactor(int numberOfVehiclesInNode)
 {
     if(getCapacity() > 0 && getCapacity() < 10000 )
     {
-        return slowdownFactor * numberOfVehiclesInNode / getCapacity();
+        return 1 + slowdownFactor * (getCapacity() - numberOfVehiclesInNode) / getCapacity();
     }
     return slowdownFactor;
 }
