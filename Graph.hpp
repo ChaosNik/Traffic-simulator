@@ -21,6 +21,7 @@ private:
     int id;
     float slowdownFactor;
     int maxCapacity;
+    int maxSpeed;
 };
 
 // Class for location nodes (cities, parking, etc.)
@@ -83,7 +84,6 @@ public:
     int calculatePath(NodePath* from, NodeLocation* to, std::set<Node*> visited, Node** next);
     int calculateIntersection(NodePath* from, NodeIntersection* intersection, NodeLocation* to, std::set<Node*> visited, Node** next);
     Node* bestNextNode(Node* from, Node* to);
-    int getDurration(Node* from, Node* to);
     bool isLocation(Node* x) {return locations.count((NodeLocation*)x);}
     bool isPath(Node* x) {return paths.count((NodePath*)x);}
     bool isIntersection(Node* x) {return intersections.count((NodeIntersection*)x);}

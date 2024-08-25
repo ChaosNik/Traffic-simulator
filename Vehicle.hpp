@@ -14,7 +14,7 @@ public:
     Node* getCurrent() {return current;}
     Node* getGoal() {return goal;}
     void tick(int step, std::list<Vehicle*> vehicles);
-    int numberOfVehiclesInNode(Node* node);
+    static int numberOfVehiclesInNode(Node* node, std::list<Vehicle*> vehicles);
 
 private:
     int id;

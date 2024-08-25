@@ -152,7 +152,9 @@ Node* Graph::bestNextNode(Node* from, Node* to)
     if (NodeLocation* locFrom = dynamic_cast<NodeLocation*>(from))
     {
         if (NodeLocation* locTo = dynamic_cast<NodeLocation*>(to))
+        {
             calculateLocation(locFrom, locTo, visited, &next);
+        }
     }
     else if (NodePath* pathFrom = dynamic_cast<NodePath*>(from))
     {
@@ -170,36 +172,6 @@ Node* Graph::bestNextNode(Node* from, Node* to)
     }
 
     return next;
-}
-
-// Gets the duration of the path between two nodes
-int Graph::getDurration(Node *from, Node *to)
-{
-    Node* next = to;
-    std::set<Node*> visited;
-    int length = 100000;
-
-    if (NodeLocation* locFrom = dynamic_cast<NodeLocation*>(from))
-    {
-        if (NodeLocation* locTo = dynamic_cast<NodeLocation*>(to))
-            length = calculateLocation(locFrom, locTo, visited, &next);
-    }
-    else if (NodePath* pathFrom = dynamic_cast<NodePath*>(from))
-    {
-        for (NodeIntersection* intersection : intersections)
-        {
-            if (intersection->getPaths().count(pathFrom))
-            {
-                if (NodeLocation* locTo = dynamic_cast<NodeLocation*>(to))
-                    length = calculateIntersection(pathFrom, intersection, locTo, visited, &next);
-                return length;
-            }
-        }
-        if (NodeLocation* locTo = dynamic_cast<NodeLocation*>(to))
-            length = calculatePath(pathFrom, locTo, visited, &next);
-    }
-
-    return length;
 }
 
 // Serialize the graph to a file

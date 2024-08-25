@@ -6,7 +6,7 @@ void Simulation::run()
 {
     for(; i < duration; i += step)
     {
-        std::cout << "Time: " << i << std::endl << std::endl;
+        std::cout << "Time: " << i << std::endl;
         runOneStep();
         bool finished = true;
         for(Vehicle* v : vehicles)
@@ -15,6 +15,7 @@ void Simulation::run()
         if(finished)
             i = duration;
     }
+    std::cout << "Final state of simulation:" << std::endl;
     runOneStep();
     std::cout << "The simulation has finished!!!" << std::endl;
 }
@@ -24,7 +25,7 @@ void Simulation::runStepByStep()
 {
     for(; i < duration; i += step)
     {
-        std::cout << "Time: " << i << std::endl << std::endl;
+        std::cout << "Time: " << i << std::endl;
         runOneStep();
         bool finished = true;
         for(Vehicle* v : vehicles)
@@ -36,25 +37,15 @@ void Simulation::runStepByStep()
         std::string line;
         std::getline(std::cin, line);
     }
+    std::cout << "Final state of simulation:" << std::endl;
     runOneStep();
-
     std::cout << "The simulation has finished!!!" << std::endl;
 }
 
 // Method to run one step of the simulation
 void Simulation::runOneStep()
 {
-    for(Vehicle* v : vehicles)
-    {
-        if(v->getCurrent()->getId() == v->getGoal()->getId())
-            std::cout << "Vehicle " << v->getId() << " has finished and is in it's goal "
-                << v->getGoal()->getId() << std::endl;
-        else
-            std::cout << "Vehicle " << v->getId() << " whose goal is " << v->getGoal()->getId()
-                << " is in " << v->getCurrent()->getId() << std::endl;
-    }
-    std::cout << std::endl;
-
+    printVehicles();
     for(Vehicle* v : vehicles)
         v->tick(step, vehicles);
 }
@@ -67,7 +58,7 @@ void Simulation::printState(Vehicle* v)
         if(v->getCurrent()->getId() == loc->getId())
         {
             std::cout << "Vehicle " << v->getId() <<
-                "is in location " << loc->getName() << std::endl;
+                " is in location " << loc->getName() << std::endl;
             return;
         }
     }
@@ -78,7 +69,7 @@ void Simulation::printState(Vehicle* v)
             std::cout << v->getId();
         {
             std::cout << "Vehicle " << v->getId() <<
-                "is on path " << path->getId() << std::endl;
+                " is on path " << path->getId() << std::endl;
             return;
         }
     }
@@ -91,7 +82,7 @@ void Simulation::printState(Vehicle* v)
             if(v->getCurrent()->getId() == path->getId())
             {
                 std::cout << "Vehicle " << v->getId() <<
-                    "is in intersection " << inter->getId() << std::endl;
+                    " is in intersection " << inter->getId() << std::endl;
                 return;
             }
         }
@@ -99,7 +90,16 @@ void Simulation::printState(Vehicle* v)
 }
 
 // Method to get the duration of the path between two nodes
-int Simulation::getDurration(Node* from, Node* to)
+void Simulation::printVehicles()
 {
-    return graph->getDurration(from, to);
+    for(Vehicle* v : vehicles)
+    {
+        if(v->getCurrent()->getId() == v->getGoal()->getId())
+            std::cout << "Vehicle " << v->getId() << " has finished and is in it's goal "
+                << v->getGoal()->getId() << std::endl;
+        else
+            std::cout << "Vehicle " << v->getId() << " whose goal is " << v->getGoal()->getId()
+                << " is in " << v->getCurrent()->getId() << std::endl;
+    }
+    std::cout << std::endl;
 }

@@ -18,6 +18,7 @@ public:
     int getDurration(Node* from, Node* to);
 
 private:
+    void printVehicles();
     int step;
     int i;
     Graph* graph;
