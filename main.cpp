@@ -138,6 +138,7 @@ int main()
     int select = 1;
     std::cout << "Enter 1 for auto simulation or 2 for step-by-step simulation: ";
     std::cin >> select;
+    std::cin.ignore();
     if(select == 1)
         sim.run();
     else
